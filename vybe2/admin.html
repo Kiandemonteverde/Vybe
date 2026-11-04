@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#101010">
+  <title>VYBE Admin</title>
+  <link rel="icon" href="images/icon.png">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Sign in -->
+  <main id="login-screen" class="login-screen" hidden>
+    <form id="login-form" class="card login-card" autocomplete="on">
+      <a class="logo" href="index.html"><span>♫</span> VYBE</a>
+      <h1>Admin sign in</h1>
+      <label>Email
+        <input type="email" id="login-email" autocomplete="username" required>
+      </label>
+      <label>Password
+        <input type="password" id="login-password" autocomplete="current-password" required>
+      </label>
+      <p id="login-error" class="form-error" role="alert"></p>
+      <button type="submit" class="btn primary" id="login-submit">Sign in</button>
+      <a class="back-link" href="index.html">Back to VYBE</a>
+    </form>
+  </main>
+
+  <!-- Dashboard -->
+  <div id="dashboard" hidden>
+    <header class="admin-top">
+      <a class="logo" href="index.html"><span>♫</span> VYBE <em>Admin</em></a>
+      <div class="admin-top-right">
+        <span id="admin-email" class="muted"></span>
+        <a class="btn ghost" href="index.html" target="_blank" rel="noopener">View site</a>
+        <button class="btn ghost" id="signout-btn">Sign out</button>
+      </div>
+    </header>
+
+    <div class="admin-wrap">
+      <section class="stats" aria-label="Library summary">
+        <div class="stat"><b id="stat-total">0</b><span>Total songs</span></div>
+        <div class="stat"><b id="stat-published">0</b><span>Published</span></div>
+        <div class="stat"><b id="stat-drafts">0</b><span>Drafts</span></div>
+        <div class="stat"><b id="stat-playlists">0</b><span>Playlists</span></div>
+      </section>
+
+      <section class="card">
+        <div class="list-head">
+          <h2>Upload music</h2>
+          <div class="tabs" role="group" aria-label="What are you uploading?">
+            <button type="button" class="tab active" data-mode="songs" aria-pressed="true">Songs</button>
+            <button type="button" class="tab" data-mode="playlist" aria-pressed="false">Playlist</button>
+          </div>
+        </div>
+        <p class="muted" id="upload-help"></p>
+        <form id="upload-form" class="grid-form">
+          <div id="playlist-fields" class="grid-form nested span-2" hidden>
+            <label>Upload to
+              <select id="up-playlist"></select>
+            </label>
+            <label id="up-pl-name-field">Playlist name *
+              <input type="text" id="up-pl-name" maxlength="100">
+            </label>
+            <label class="span-2" id="up-pl-desc-field">Description
+              <textarea id="up-pl-desc" maxlength="500" rows="2"></textarea>
+            </label>
+          </div>
+          <div id="drop-zone" class="drop-zone span-2">
+            <b>Drag MP3 files or a whole folder here</b>
+            <small>Titles, artists and artwork are read from each file. Each MP3 can be up to 50 MB.</small>
+            <div class="drop-buttons">
+              <label class="btn ghost small">Choose files
+                <input type="file" id="up-audio" class="visually-hidden" accept=".mp3,audio/mpeg" multiple>
+              </label>
+              <label class="btn ghost small">Choose folder
+                <input type="file" id="up-folder" class="visually-hidden" webkitdirectory multiple>
+              </label>
+            </div>
+          </div>
+          <label>Artist <small>(used for any song without its own artist)</small>
+            <input type="text" id="up-artist" maxlength="200">
+          </label>
+          <label>Album <small>(overrides each file's album)</small>
+            <input type="text" id="up-album" maxlength="200">
+          </label>
+          <label>Genre <small>(overrides each file's genre)</small>
+            <input type="text" id="up-genre" maxlength="100" list="genre-options" placeholder="OPM, Pop, R&amp;B, Hip-Hop…">
+          </label>
+          <label>Cover image <small>(JPG, PNG or WebP, up to 5 MB, replaces each file's artwork)</small>
+            <input type="file" id="up-cover" accept="image/jpeg,image/png,image/webp">
+          </label>
+          <div id="queue" class="queue span-2" hidden></div>
+          <label class="check span-2"><input type="checkbox" id="up-publish"> <span id="up-publish-text">Publish as soon as uploaded</span></label>
+          <div class="form-actions">
+            <button type="submit" class="btn primary" id="upload-submit" disabled>Upload songs</button>
+            <button type="button" class="btn ghost" id="queue-clear" hidden>Clear list</button>
+            <span id="upload-status" class="muted" role="status"></span>
+          </div>
+        </form>
+        <datalist id="genre-options">
+          <option value="OPM"><option value="Chill"><option value="Focus"><option value="Energy"><option value="Night">
+          <option value="Pop"><option value="Hip-Hop"><option value="R&amp;B"><option value="Rock">
+          <option value="Electronic"><option value="Jazz"><option value="Classical"><option value="Acoustic"><option value="Lo-fi">
+        </datalist>
+      </section>
+
+      <section class="card">
+        <div class="list-head">
+          <h2>Playlists</h2>
+        </div>
+        <div id="admin-playlists" class="admin-songs"></div>
+      </section>
+
+      <section class="card">
+        <div class="list-head">
+          <h2>Community playlists</h2>
+        </div>
+        <p class="muted">Public playlists made by listeners. You can hide one that shouldn't be public, or reset an inappropriate name.</p>
+        <div id="admin-community" class="admin-songs"></div>
+      </section>
+
+      <section class="card">
+        <div class="list-head">
+          <h2>Profile photos</h2>
+        </div>
+        <p class="muted">Photos listeners have chosen. You can remove one that shouldn't be shown.</p>
+        <div id="admin-photos" class="admin-songs"></div>
+      </section>
+
+      <section class="card">
+        <div class="list-head">
+          <h2>Your songs</h2>
+          <button class="btn ghost small" id="publish-all" hidden>Publish all drafts</button>
+          <div class="tabs" role="tablist" aria-label="Filter songs">
+            <button class="tab active" data-filter="all" role="tab">All</button>
+            <button class="tab" data-filter="published" role="tab">Published</button>
+            <button class="tab" data-filter="draft" role="tab">Drafts</button>
+          </div>
+        </div>
+        <input type="search" id="song-search" class="song-search" placeholder="Search by title, artist, album or genre" aria-label="Search songs">
+        <button type="button" class="btn ghost small set-genre" id="set-genre-shown" hidden></button>
+        <div id="admin-songs" class="admin-songs"></div>
+      </section>
+    </div>
+
+    <div id="preview-bar" class="preview-bar" hidden>
+      <span id="preview-title">Preview</span>
+      <audio id="preview-audio" controls></audio>
+      <button class="btn ghost" id="preview-close">Close</button>
+    </div>
+  </div>
+
+  <!-- Edit song -->
+  <dialog id="edit-dialog">
+    <form id="edit-form" class="grid-form">
+      <h2>Edit song</h2>
+      <label>Title *<input type="text" id="ed-title" maxlength="200" required></label>
+      <label>Artist *<input type="text" id="ed-artist" maxlength="200" required></label>
+      <label>Album<input type="text" id="ed-album" maxlength="200"></label>
+      <label>Genre<input type="text" id="ed-genre" maxlength="100" list="genre-options"></label>
+      <label>Replace cover image<input type="file" id="ed-cover" accept="image/jpeg,image/png,image/webp"></label>
+      <label class="check"><input type="checkbox" id="ed-remove-cover"> Remove current cover</label>
+      <label>Replace MP3<input type="file" id="ed-audio" accept=".mp3,audio/mpeg"></label>
+      <p id="edit-error" class="form-error" role="alert"></p>
+      <div class="form-actions">
+        <button type="submit" class="btn primary" id="edit-submit">Save changes</button>
+        <button type="button" class="btn ghost" id="edit-cancel">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Edit playlist -->
+  <dialog id="pl-dialog">
+    <form id="pl-form" class="grid-form">
+      <h2>Edit playlist</h2>
+      <label class="span-2">Name *<input type="text" id="pl-name" maxlength="100" required></label>
+      <label class="span-2">Description<textarea id="pl-desc" maxlength="500" rows="2"></textarea></label>
+      <label>Replace cover image<input type="file" id="pl-cover" accept="image/jpeg,image/png,image/webp"></label>
+      <label class="check"><input type="checkbox" id="pl-remove-cover"> Remove current cover</label>
+      <div class="span-2 pl-tracks-box">
+        <h3>Songs</h3>
+        <div id="pl-tracks" class="pl-tracks"></div>
+        <div class="pl-add">
+          <select id="pl-add-song" aria-label="Song to add"></select>
+          <button type="button" class="btn ghost small" id="pl-add-btn">Add song</button>
+        </div>
+      </div>
+      <p id="pl-error" class="form-error" role="alert"></p>
+      <div class="form-actions">
+        <button type="submit" class="btn primary" id="pl-submit">Save changes</button>
+        <button type="button" class="btn ghost" id="pl-cancel">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

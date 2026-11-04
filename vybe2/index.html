@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="VYBE — music for every mood">
+  <title>VYBE — Music for Every Mood</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/></symbol>
+    <symbol id="i-library" viewBox="0 0 24 24"><path d="M5 4v16M10 4v16"/><path d="m15 4.5 4.5 15.5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8.5-5-8.5-11.2A4.8 4.8 0 0 1 12 6.4a4.8 4.8 0 0 1 8.5 2.9c0 6.2-8.5 11.2-8.5 11.2Z"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path class="solid" d="M7 4.5v15l12.5-7.5Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path class="solid" d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path class="solid" d="M5 5v14l10.5-7ZM16.5 5h2.5v14h-2.5z"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path class="solid" d="M19 5v14L8.5 12ZM5 5h2.5v14H5z"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3 7h3.5c2 0 3.2 1 4.3 2.700l2.400 4.600C14.300 16 15.500 17 17.500 17H21"/><path d="M3 17h3.500c1.400 0 2.400-.5 3.200-1.400M14.300 8.400C15.100 7.500 16.100 7 17.500 7H21"/><path d="m18 4 3 3-3 3M18 14l3 3-3 3"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 11V9.500A3.500 3.500 0 0 1 7.500 6H20"/><path d="m17 3 3 3-3 3"/><path d="M20 13v1.500a3.500 3.500 0 0 1-3.500 3.500H4"/><path d="m7 15-3 3 3 3"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path class="solid" d="M4 9.500v5h3.500L12 18.500v-13L7.500 9.500Z"/><path d="M15.500 9a4.500 4.500 0 0 1 0 6M18 6.500a8 8 0 0 1 0 11"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="i-forward" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="m5 15 7-7 7 7"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-install" viewBox="0 0 24 24"><path d="M12 4v11M7.500 11 12 15.500 16.500 11M5 20h14"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6.500" cy="18" r="2.500"/><circle cx="17.500" cy="16" r="2.500"/></symbol>
+  </svg>
+
+  <div class="app">
+    <aside class="sidebar">
+      <a class="logo" href="#" id="logo-link" aria-label="VYBE home"><span>♫</span> VYBE</a>
+      <nav class="main-nav" aria-label="Main">
+        <button class="nav-btn active" data-view="home"><svg class="icon"><use href="#i-home"/></svg><span>Home</span></button>
+        <button class="nav-btn" data-view="search"><svg class="icon"><use href="#i-search"/></svg><span>Search</span></button>
+        <button class="nav-btn" data-view="library"><svg class="icon"><use href="#i-library"/></svg><span>Your Library</span></button>
+        <button class="nav-btn" data-view="liked"><svg class="icon"><use href="#i-heart"/></svg><span>Liked Songs</span></button>
+      </nav>
+      <div class="sidebar-playlists">
+        <div class="playlist-heading">
+          <h3>Your Playlists</h3>
+          <button id="create-playlist" class="round-btn" aria-label="Create playlist" title="Create playlist"><svg class="icon"><use href="#i-plus"/></svg></button>
+        </div>
+        <div id="playlist-list"></div>
+      </div>
+      <div class="sidebar-bottom">
+        <button class="welcome-button" id="install-btn" hidden><svg class="icon"><use href="#i-install"/></svg> Install app</button>
+        <p id="sidebar-note">Log in to save likes and playlists to your account.</p>
+      </div>
+    </aside>
+
+    <main class="main-content" id="main-content">
+      <header class="topbar">
+        <div class="history-buttons">
+          <button id="back-btn" aria-label="Go back"><svg class="icon"><use href="#i-back"/></svg></button>
+          <button id="forward-btn" aria-label="Go forward"><svg class="icon"><use href="#i-forward"/></svg></button>
+        </div>
+        <label class="search-box">
+          <svg class="icon"><use href="#i-search"/></svg>
+          <input type="search" id="global-search" placeholder="Search songs, artists, playlists, people" aria-label="Search">
+        </label>
+        <div class="account" id="account">
+          <div id="guest-actions" class="guest-actions">
+            <button class="text-btn" id="signup-btn">Sign up</button>
+            <button class="welcome-button small" id="login-btn">Log in</button>
+          </div>
+          <button class="profile-btn" id="profile-btn" aria-haspopup="true" aria-expanded="false" hidden></button>
+          <div class="account-menu" id="account-menu" hidden>
+            <p class="account-name" id="account-name"></p>
+            <p class="account-email" id="account-email"></p>
+            <button class="menu-item" id="my-profile-btn">Your profile</button>
+            <a class="menu-item" id="admin-link" href="admin.html" hidden>Admin dashboard</a>
+            <button class="menu-item" id="signout-btn">Log out</button>
+          </div>
+        </div>
+      </header>
+
+      <section id="home-view" class="page active">
+        <div class="welcome">
+          <p class="eyebrow">STREAM ON VYBE</p>
+          <h1>Feel the <span>VYBE.</span></h1>
+          <p>Music for every moment, every mood.</p>
+          <button class="welcome-button" id="browse-btn"><svg class="icon"><use href="#i-play"/></svg> Browse music</button>
+        </div>
+        <h2>Discover</h2>
+        <div class="featured-grid">
+          <button class="featured-card orange" data-chart="trending"><b>Trending now</b><small>What listeners love this week</small></button>
+          <button class="featured-card blue" data-chart="opm"><b>Best OPM</b><small>Top Original Pilipino Music</small></button>
+          <button class="featured-card pink" data-chart="liked"><b>Most liked</b><small>The songs with the most hearts</small></button>
+        </div>
+        <div id="featured-section" hidden>
+          <h2>Featured playlists</h2>
+          <div id="featured-playlists" class="playlist-grid"></div>
+        </div>
+        <div id="community-section" hidden>
+          <h2>From the community</h2>
+          <div id="community-playlists" class="playlist-grid"></div>
+        </div>
+        <div class="section-heading"><h2>Latest songs</h2><span id="song-count">0 songs</span></div>
+        <div id="home-songs" class="song-list"></div>
+      </section>
+
+      <section id="search-view" class="page">
+        <h1>Search</h1>
+        <p class="muted">Search by song, artist, album, genre, playlist or person.</p>
+        <label class="search-large"><svg class="icon"><use href="#i-search"/></svg><input type="search" id="page-search" placeholder="What do you want to listen to?" aria-label="Search"></label>
+        <div id="search-people-section" class="search-playlists" hidden>
+          <h2>People</h2>
+          <div id="search-people" class="people-grid"></div>
+        </div>
+        <div id="search-playlists-section" class="search-playlists" hidden>
+          <h2>Playlists</h2>
+          <div id="search-playlists" class="playlist-grid"></div>
+          <h2 class="search-songs-heading">Songs</h2>
+        </div>
+        <div id="search-results" class="song-list"></div>
+      </section>
+
+      <section id="library-view" class="page">
+        <h1>Your Library</h1>
+        <div class="section-heading library-heading">
+          <h2>Your playlists</h2>
+          <button class="welcome-button small" id="create-playlist-library"><svg class="icon"><use href="#i-plus"/></svg> New playlist</button>
+        </div>
+        <div id="library-playlists" class="playlist-grid"></div>
+        <div class="section-heading library-heading"><h2>All songs</h2></div>
+        <div id="library-songs" class="song-list"></div>
+      </section>
+
+      <section id="liked-view" class="page">
+        <div class="collection-hero liked">
+          <div class="collection-art"><svg class="icon"><use href="#i-heart"/></svg></div>
+          <div class="collection-info">
+            <p class="eyebrow">YOUR COLLECTION</p>
+            <h1>Liked Songs</h1>
+            <p id="liked-count">0 songs</p>
+            <div class="collection-actions">
+              <button class="welcome-button" id="liked-play"><svg class="icon"><use href="#i-play"/></svg> Play</button>
+            </div>
+          </div>
+        </div>
+        <div id="liked-songs" class="song-list"></div>
+      </section>
+
+      <section id="playlists-view" class="page">
+        <div class="section-heading">
+          <h1>Your Playlists</h1>
+          <button id="create-playlist-mobile" class="welcome-button small"><svg class="icon"><use href="#i-plus"/></svg> New</button>
+        </div>
+        <div id="playlists-page-list" class="playlist-grid"></div>
+      </section>
+
+      <section id="playlist-view" class="page">
+        <div class="collection-hero">
+          <div class="collection-art" id="playlist-art"></div>
+          <div class="collection-info">
+            <p class="eyebrow" id="playlist-kind">PLAYLIST</p>
+            <h1 id="playlist-title">Playlist</h1>
+            <p class="collection-description" id="playlist-description" hidden></p>
+            <button class="owner-link" id="playlist-owner" hidden></button>
+            <p id="playlist-meta"></p>
+            <div class="collection-actions">
+              <button class="welcome-button" id="playlist-play"><svg class="icon"><use href="#i-play"/></svg> Play</button>
+              <button class="pill-btn" id="playlist-shuffle"><svg class="icon"><use href="#i-shuffle"/></svg> Shuffle</button>
+              <button class="pill-btn" id="playlist-save"><svg class="icon"><use href="#i-plus"/></svg> <span id="playlist-save-text">Save to my playlists</span></button>
+              <button class="pill-btn" id="playlist-visibility"></button>
+              <button class="pill-btn" id="playlist-share">Copy link</button>
+              <button class="pill-btn" id="playlist-rename">Rename</button>
+              <button class="pill-btn danger" id="playlist-delete">Delete</button>
+            </div>
+          </div>
+        </div>
+        <div id="playlist-songs" class="song-list"></div>
+      </section>
+
+      <section id="chart-view" class="page">
+        <div class="collection-hero" id="chart-hero">
+          <div class="collection-art"><svg class="icon"><use href="#i-music"/></svg></div>
+          <div class="collection-info">
+            <p class="eyebrow">ON VYBE</p>
+            <h1 id="chart-title"></h1>
+            <p id="chart-note"></p>
+            <div class="collection-actions">
+              <button class="welcome-button" id="chart-play"><svg class="icon"><use href="#i-play"/></svg> Play</button>
+            </div>
+          </div>
+        </div>
+        <div id="chart-songs" class="song-list"></div>
+      </section>
+
+      <section id="profile-view" class="page">
+        <div class="collection-hero profile-hero">
+          <div class="avatar-wrap">
+            <div class="collection-art profile-avatar" id="profile-avatar"></div>
+            <label class="avatar-edit" id="avatar-edit" hidden>
+              <input type="file" id="avatar-input" class="visually-hidden" accept="image/jpeg,image/png,image/webp">
+              <span>Choose photo</span>
+            </label>
+          </div>
+          <div class="collection-info">
+            <p class="eyebrow">PROFILE</p>
+            <h1 id="profile-name"></h1>
+            <p id="profile-meta"></p>
+            <div class="collection-actions">
+              <button class="welcome-button" id="profile-follow"></button>
+              <button class="pill-btn" id="profile-edit">Edit name</button>
+              <button class="pill-btn" id="profile-remove-photo">Remove photo</button>
+              <button class="pill-btn" id="profile-share">Copy link</button>
+            </div>
+          </div>
+        </div>
+        <h2 class="profile-heading">Public playlists</h2>
+        <div id="profile-playlists" class="playlist-grid"></div>
+        <h2 class="profile-heading" id="profile-followers-heading">Followers</h2>
+        <div id="profile-followers" class="people-grid"></div>
+        <h2 class="profile-heading" id="profile-following-heading">Following</h2>
+        <div id="profile-following" class="people-grid"></div>
+      </section>
+    </main>
+
+    <footer class="player">
+      <div class="now-playing">
+        <div class="album-cover" id="player-cover">♫</div>
+        <div class="track-info"><h4 id="player-title">No song playing</h4><p id="player-artist">Pick a song to get started</p></div>
+        <button id="like-current" class="icon-btn" title="Like song" aria-label="Like current song"><svg class="icon"><use href="#i-heart"/></svg></button>
+      </div>
+      <div class="player-controls">
+        <div class="control-buttons">
+          <button id="shuffle-btn" title="Shuffle" aria-label="Shuffle" aria-pressed="false"><svg class="icon"><use href="#i-shuffle"/></svg></button>
+          <button id="previous-btn" title="Previous" aria-label="Previous"><svg class="icon"><use href="#i-prev"/></svg></button>
+          <button id="play-btn" class="play-button" title="Play" aria-label="Play"><svg class="icon"><use href="#i-play"/></svg></button>
+          <button id="next-btn" title="Next" aria-label="Next"><svg class="icon"><use href="#i-next"/></svg></button>
+          <button id="repeat-btn" title="Repeat" aria-label="Repeat" aria-pressed="false"><svg class="icon"><use href="#i-repeat"/></svg></button>
+        </div>
+        <div class="progress-area">
+          <span id="current-time">0:00</span>
+          <input type="range" id="progress" min="0" max="100" step="0.1" value="0" aria-label="Playback position">
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+      <div class="volume-area"><svg class="icon"><use href="#i-volume"/></svg><input type="range" id="volume" min="0" max="1" step="0.01" value="0.7" aria-label="Volume"></div>
+    </footer>
+
+    <!-- Phone-only bottom navigation (the sidebar is hidden at ≤600px) -->
+    <nav class="mobile-nav" aria-label="Main">
+      <button class="nav-btn active" data-view="home"><svg class="icon"><use href="#i-home"/></svg><small>Home</small></button>
+      <button class="nav-btn" data-view="search"><svg class="icon"><use href="#i-search"/></svg><small>Search</small></button>
+      <button class="nav-btn" data-view="library"><svg class="icon"><use href="#i-library"/></svg><small>Library</small></button>
+      <button class="nav-btn" data-view="liked"><svg class="icon"><use href="#i-heart"/></svg><small>Liked</small></button>
+      <button class="nav-btn" data-view="playlists"><svg class="icon"><use href="#i-list"/></svg><small>Playlists</small></button>
+    </nav>
+  </div>
+
+  <!-- Log in / sign up -->
+  <dialog id="auth-dialog" class="modal" aria-labelledby="auth-title">
+    <form id="auth-form" novalidate>
+      <button type="button" class="modal-close" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h2 id="auth-title">Log in to VYBE</h2>
+      <p class="muted" id="auth-reason" hidden></p>
+      <label id="auth-name-field">Your name
+        <input type="text" id="auth-name" maxlength="60" autocomplete="name">
+      </label>
+      <label>Email
+        <input type="email" id="auth-email" autocomplete="username" required>
+      </label>
+      <label id="auth-password-field">Password
+        <input type="password" id="auth-password" autocomplete="current-password">
+      </label>
+      <p class="form-error" id="auth-error" role="alert"></p>
+      <p class="form-success" id="auth-success" role="status"></p>
+      <button type="submit" class="welcome-button wide" id="auth-submit">Log in</button>
+      <button type="button" class="text-btn" id="auth-forgot">Forgot your password?</button>
+      <p class="auth-switch"><span id="auth-switch-text">New to VYBE?</span> <button type="button" class="text-btn strong" id="auth-switch">Create an account</button></p>
+    </form>
+  </dialog>
+
+  <!-- Set a new password after following a reset email -->
+  <dialog id="password-dialog" class="modal" aria-labelledby="password-title">
+    <form id="password-form">
+      <h2 id="password-title">Choose a new password</h2>
+      <label>New password <small>(at least 8 characters)</small>
+        <input type="password" id="new-password" autocomplete="new-password" minlength="8" required>
+      </label>
+      <p class="form-error" id="password-error" role="alert"></p>
+      <button type="submit" class="welcome-button wide" id="password-submit">Save password</button>
+    </form>
+  </dialog>
+
+  <!-- Create or rename a playlist -->
+  <dialog id="playlist-dialog" class="modal" aria-labelledby="playlist-dialog-title">
+    <form id="playlist-form">
+      <button type="button" class="modal-close" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h2 id="playlist-dialog-title">New playlist</h2>
+      <label>Name
+        <input type="text" id="playlist-name" maxlength="100" required>
+      </label>
+      <label class="check-row" id="playlist-public-field">
+        <input type="checkbox" id="playlist-public">
+        <span>Make public <small>Anyone can see it on your profile, along with your name. Leave this off to keep it private.</small></span>
+      </label>
+      <p class="form-error" id="playlist-error" role="alert"></p>
+      <button type="submit" class="welcome-button wide" id="playlist-submit">Create</button>
+    </form>
+  </dialog>
+
+  <!-- Change the name shown on your profile -->
+  <dialog id="name-dialog" class="modal" aria-labelledby="name-dialog-title">
+    <form id="name-form">
+      <button type="button" class="modal-close" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h2 id="name-dialog-title">Edit your name</h2>
+      <label>Name <small>(shown on your public playlists)</small>
+        <input type="text" id="profile-name-input" maxlength="60" required>
+      </label>
+      <p class="form-error" id="name-error" role="alert"></p>
+      <button type="submit" class="welcome-button wide" id="name-submit">Save</button>
+    </form>
+  </dialog>
+
+  <!-- Add a song to a playlist -->
+  <dialog id="add-dialog" class="modal" aria-labelledby="add-dialog-title">
+    <div class="modal-body">
+      <button type="button" class="modal-close" data-close aria-label="Close"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h2 id="add-dialog-title">Add to playlist</h2>
+      <p class="muted" id="add-song-name"></p>
+      <div id="add-options" class="add-options"></div>
+      <button type="button" class="pill-btn wide" id="add-new-playlist"><svg class="icon"><use href="#i-plus"/></svg> New playlist</button>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <audio id="audio-player" preload="metadata"></audio>
+
+  <!-- Pinned supabase-js build; Supabase docs list jsDelivr as a supported CDN. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
